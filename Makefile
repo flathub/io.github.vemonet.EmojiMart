@@ -20,10 +20,17 @@ sources:
 
 flatpak:
 	flatpak-builder --keep-build-dirs --user --install --force-clean build io.github.vemonet.EmojiMart.yml --repo=.repo
-	flatpak run io.github.vemonet.EmojiMart --keep
+
+# flatpak run io.github.vemonet.EmojiMart --keep
 
 bundle:
 	flatpak build-bundle .repo io.github.vemonet.EmojiMart.flatpak io.github.vemonet.EmojiMart
+
+bundle-ydotool:
+	sed -i "s/- --device=dri/- --device=all/g" ./io.github.vemonet.EmojiMart.yml
+	make flatpak
+	make bundle
+	sed -i "s/- --device=all/- --device=dri/g" ./io.github.vemonet.EmojiMart.yml
 
 clean:
 	rm -rf .flatpak-builder build/
