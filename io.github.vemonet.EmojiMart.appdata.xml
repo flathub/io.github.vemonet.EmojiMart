@@ -3,13 +3,14 @@
   <id>io.github.vemonet.EmojiMart</id>
 
   <name>Emoji Mart</name>
-  <summary>A modern popup emoji picker, based on the Emoji Mart web component.</summary>
+  <summary>A modern popup emoji picker for desktop, based on the Emoji Mart web component.</summary>
   <developer_name>Vincent Emonet</developer_name>
 
   <metadata_license>FSFAP</metadata_license>
   <project_license>MIT</project_license>
 
   <url type="homepage">https://github.com/vemonet/EmojiMart</url>
+  <url type="vcs-browser">https://github.com/vemonet/EmojiMart</url>
   <url type="bugtracker">https://github.com/vemonet/EmojiMart/issues</url>
 
   <supports>
@@ -23,7 +24,7 @@
 
   <description>
     <p>
-      Launch the emoji picker with your favorite keyboard shortcut, and select an emoji to paste in the clipboard, or directly in the focused window on X11.
+      Launch the emoji picker with your favorite keyboard shortcut, and select an emoji to paste in the clipboard, or directly in the focused text input on X11.
     </p>
     <ul>
       <li>🍾 Built as a popup: quick invocation through the system custom shortcuts, and disappears when not needed, does not stay as a standalone window, does not run in the background</li>
@@ -32,7 +33,7 @@
       <li>🧠 Remember your favorite emojis</li>
       <li>⚔️ Cross-platform, can be installed natively on Linux, MacOS, or Windows</li>
       <li>🧑‍🚀 Uses modern and flexible technologies (Tauri, TypeScript, and Svelte), making it easier to maintain and build upon in the future</li>
-      <li>✒️ On x11 the selected emoji is automatically pasted to your currently focused app, instead of being added to the clipboard! (it allows to uses emojis without losing what was copied before). This can be enabled also on Wayland, but require to open permissions of /dev/uinput</li>
+      <li>✒️ On x11 the selected emoji is automatically pasted to the currently focused text input, instead of being added to the clipboard! (it allows to uses emojis without losing what was copied before). This can be enabled also on Wayland, but require to open permissions of /dev/uinput</li>
       <li>⚠️ Auto-paste can be enabled on Wayland, but it requires to open permissions of /dev/uinput, which is not recommended for security concerns. See the homepage for more details.</li>
     </ul>
   </description>
@@ -45,7 +46,11 @@
   </screenshots>
 
   <releases>
-    <release version="0.1.1" date="2023-06-26"/>
+    <release type="stable" version="0.1.1" date="2023-06-26">
+      <description>
+        <p>First release</p>
+      </description>
+    </release>
   </releases>
   <content_rating type="oars-1.1"/>
 </component>

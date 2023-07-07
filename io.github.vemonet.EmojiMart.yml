@@ -96,14 +96,6 @@ modules:
     cleanup:
       - /share/man
 
-  # Don't work with most Composer like Mutter: https://github.com/atx/wtype
-  # - name: wtype
-  #   sources:
-  #     - type: git
-  #       url: https://github.com/atx/wtype
-  #       commit: d71be3a7b3f93b534a2823fd68cabd7ac2a02359
-  #   buildsystem: meson
-
   - name: EmojiMart
     buildsystem: simple
     build-options:
