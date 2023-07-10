@@ -107,7 +107,7 @@ modules:
       #   path: "../EmojiMart"
       - type: git
         url: https://github.com/vemonet/EmojiMart
-        tag: v0.1.3
+        tag: v0.2.0
         # commit: 3439f717b3084b1f332c05a321a17387edb7d632
       - 'node-sources.json'
       - 'cargo-sources.json'
