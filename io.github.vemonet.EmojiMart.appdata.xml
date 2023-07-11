@@ -47,14 +47,14 @@
   </screenshots>
 
   <releases>
-    <release type="stable" version="0.1.1" date="2023-06-26">
-      <description>
-        <p>First release</p>
-      </description>
-    </release>
     <release type="stable" version="0.2.4" date="2023-07-11">
       <description>
         <p>Add localization for 22 languages</p>
+      </description>
+    </release>
+    <release type="stable" version="0.1.1" date="2023-06-26">
+      <description>
+        <p>First release</p>
       </description>
     </release>
   </releases>
