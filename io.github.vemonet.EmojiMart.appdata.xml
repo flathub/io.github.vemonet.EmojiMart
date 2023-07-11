@@ -52,7 +52,7 @@
         <p>First release</p>
       </description>
     </release>
-    <release type="stable" version="0.2.0" date="2023-07-10">
+    <release type="stable" version="0.2.4" date="2023-07-11">
       <description>
         <p>Add localization for 22 languages</p>
       </description>
