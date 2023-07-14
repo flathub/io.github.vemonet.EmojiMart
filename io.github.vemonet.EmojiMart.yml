@@ -86,6 +86,16 @@ modules:
     cleanup:
       - /share/man
 
+  # To trigger paste on wayland https://github.com/ReimuNotMoe/ydotool
+  - name: ydotool
+    buildsystem: cmake
+    sources:
+      - type: git
+        url: https://github.com/vemonet/ydotool.git
+        commit: a6b6d34935340f27b613cd41bd12de66265079f3
+    cleanup:
+      - /share/man
+
   - name: EmojiMart
     buildsystem: simple
     build-options:
@@ -97,8 +107,8 @@ modules:
       #   path: "../EmojiMart"
       - type: git
         url: https://github.com/vemonet/EmojiMart
-        commit: 3439f717b3084b1f332c05a321a17387edb7d632
-        # tag: v0.1.2
+        tag: v0.2.4
+        # commit: 3439f717b3084b1f332c05a321a17387edb7d632
       - 'node-sources.json'
       - 'cargo-sources.json'
       - type: file

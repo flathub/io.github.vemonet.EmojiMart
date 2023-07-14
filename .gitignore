@@ -1,4 +1,6 @@
 .flatpak-builder
 build
+.repo
+*.flatpak
 .venv
 flatpak-cargo-generator.py
