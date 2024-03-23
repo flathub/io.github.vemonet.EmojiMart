@@ -1,9 +1,9 @@
 app-id: io.github.vemonet.EmojiMart
 runtime: org.gnome.Platform
-runtime-version: '44'
+runtime-version: '45'
 sdk: org.gnome.Sdk
 sdk-extensions:
-  - org.freedesktop.Sdk.Extension.node16
+  - org.freedesktop.Sdk.Extension.node18
   - org.freedesktop.Sdk.Extension.rust-stable
 command: emoji-mart
 rename-icon: emoji-mart
@@ -13,59 +13,15 @@ finish-args:
   - --share=ipc
   - --share=network
   - --device=dri
+  # - --device=all
 
 build-options:
-  append-path: /usr/lib/sdk/node16/bin:/usr/lib/sdk/rust-stable/bin
+  append-path: /usr/lib/sdk/node18/bin:/usr/lib/sdk/rust-stable/bin
+
+# New workflow for v2: https://github.com/tauri-apps/tauri-docs/blob/6b9a877a8eb152c09cc3vbb78696e80d485206e34/src/content/docs/guides/distribute/flatpak.mdx
 
 modules:
   # - flathub-shared-modules/libappindicator/libappindicator-gtk3-12.10.json
-
-  # Required to work on Gnome 44 (tauri@next already migrated to webkit2gtk-4.1 which is integrated in gnome 44)
-  - name: webkit2gtk-4.0
-    sources:
-      - type: archive
-        url: https://webkitgtk.org/releases/webkitgtk-2.38.6.tar.xz
-        sha256: 1c614c9589389db1a79ea9ba4293bbe8ac3ab0a2234cac700935fae0724ad48b
-        x-checker-data:
-          type: html
-          url: https://webkitgtk.org/releases/
-          version-pattern: <a href="webkitgtk\-(2\.38\.\d+)\.tar\.xz">
-          url-template: https://webkitgtk.org/releases/webkitgtk-$version.tar.xz
-    buildsystem: cmake-ninja
-    config-opts:
-      - -DPORT=GTK
-      - -DCMAKE_BUILD_TYPE=Release
-      - -DENABLE_DOCUMENTATION=OFF
-      - -DENABLE_GAMEPAD=OFF
-      - -DUSE_SOUP2=ON
-    modules:
-      - flathub-shared-modules/libsoup/libsoup-2.4.json
-      - name: bubblewrap
-        sources:
-          - type: archive
-            url: https://github.com/containers/bubblewrap/releases/download/v0.8.0/bubblewrap-0.8.0.tar.xz
-            sha256: 957ad1149db9033db88e988b12bcebe349a445e1efc8a9b59ad2939a113d333a
-            x-checker-data:
-              type: json
-              url: https://api.github.com/repos/containers/bubblewrap/releases/latest
-              tag-query: .tag_name
-              timestamp-query: .published_at
-              version-query: $tag | sub("^v"; "")
-              url-query: '"https://github.com/containers/bubblewrap/releases/download/\($tag)/bubblewrap-\($version).tar.xz"'
-        buildsystem: meson
-      - name: xdg-dbus-proxy
-        sources:
-          - type: archive
-            url: https://github.com/flatpak/xdg-dbus-proxy/releases/download/0.1.4/xdg-dbus-proxy-0.1.4.tar.xz
-            sha256: 1ec0eab53d1e49966d722352bcfd51ac402dce5190baedc749a8541e761670ab
-            x-checker-data:
-              type: json
-              url: https://api.github.com/repos/flatpak/xdg-dbus-proxy/releases/latest
-              tag-query: .tag_name
-              timestamp-query: .published_at
-              version-query: $tag
-              url-query: '"https://github.com/flatpak/xdg-dbus-proxy/releases/download/\($tag)/xdg-dbus-proxy-\($version).tar.xz"'
-        buildsystem: meson
 
   # To trigger paste on x11
   - name: xdotool
@@ -87,14 +43,14 @@ modules:
       - /share/man
 
   # To trigger paste on wayland https://github.com/ReimuNotMoe/ydotool
-  - name: ydotool
-    buildsystem: cmake
-    sources:
-      - type: git
-        url: https://github.com/vemonet/ydotool.git
-        commit: a6b6d34935340f27b613cd41bd12de66265079f3
-    cleanup:
-      - /share/man
+  # - name: ydotool
+  #   buildsystem: cmake
+  #   sources:
+  #     - type: git
+  #       url: https://github.com/vemonet/ydotool.git
+  #       commit: a6b6d34935340f27b613cd41bd12de66265079f3
+  #   cleanup:
+  #     - /share/man
 
   - name: EmojiMart
     buildsystem: simple
@@ -107,8 +63,8 @@ modules:
       #   path: "../EmojiMart"
       - type: git
         url: https://github.com/vemonet/EmojiMart
-        tag: v0.2.4
-        # commit: 3439f717b3084b1f332c05a321a17387edb7d632
+        commit: cad5bb4fc397e4ccf5f2f72002e0db2799f507b8
+        # tag: v0.2.4
       - 'node-sources.json'
       - 'cargo-sources.json'
       - type: file
