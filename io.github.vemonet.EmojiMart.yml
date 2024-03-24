@@ -13,12 +13,9 @@ finish-args:
   - --share=ipc
   - --share=network
   - --device=dri
-  # - --device=all
 
 build-options:
   append-path: /usr/lib/sdk/node18/bin:/usr/lib/sdk/rust-stable/bin
-
-# New workflow for v2: https://github.com/tauri-apps/tauri-docs/blob/6b9a877a8eb152c09cc3vbb78696e80d485206e34/src/content/docs/guides/distribute/flatpak.mdx
 
 modules:
   # - flathub-shared-modules/libappindicator/libappindicator-gtk3-12.10.json
@@ -71,8 +68,15 @@ modules:
         path: io.github.vemonet.EmojiMart.appdata.xml
       - type: file
         path: io.github.vemonet.EmojiMart.desktop
+      # Configure yarn to use the offline mirror
+      - type: inline
+        contents: |
+          yarn-offline-mirror /run/build/EmojiMart/flatpak-node/yarn-mirror
+          --install.offline true
+          --run.offline true
+        dest-filename: .yarnrc
     build-commands:
-      - 'HOME=$PWD yarn config --offline set yarn-offline-mirror $FLATPAK_BUILDER_BUILDDIR/flatpak-node/yarn-mirror'
+      # - 'HOME=$PWD yarn config --offline set yarn-offline-mirror $FLATPAK_BUILDER_BUILDDIR/flatpak-node/yarn-mirror'
       - yarn --offline
       - cargo --offline fetch --manifest-path src-tauri/Cargo.toml
       - yarn run tauri build -- -b deb
