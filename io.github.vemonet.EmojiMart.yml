@@ -43,8 +43,8 @@ modules:
       - name: bubblewrap
         sources:
           - type: archive
-            url: https://github.com/containers/bubblewrap/releases/download/v0.8.0/bubblewrap-0.8.0.tar.xz
-            sha256: 957ad1149db9033db88e988b12bcebe349a445e1efc8a9b59ad2939a113d333a
+            url: https://github.com/containers/bubblewrap/releases/download/v0.9.0/bubblewrap-0.9.0.tar.xz
+            sha256: c6347eaced49ac0141996f46bba3b089e5e6ea4408bc1c43bab9f2d05dd094e1
             x-checker-data:
               type: json
               url: https://api.github.com/repos/containers/bubblewrap/releases/latest
@@ -109,20 +109,21 @@ modules:
         url: https://github.com/vemonet/EmojiMart
         tag: v0.2.4
         # commit: 3439f717b3084b1f332c05a321a17387edb7d632
-      - 'node-sources.json'
-      - 'cargo-sources.json'
+      - node-sources.json
+      - cargo-sources.json
       - type: file
         path: io.github.vemonet.EmojiMart.appdata.xml
       - type: file
         path: io.github.vemonet.EmojiMart.desktop
     build-commands:
-      - 'HOME=$PWD yarn config --offline set yarn-offline-mirror $FLATPAK_BUILDER_BUILDDIR/flatpak-node/yarn-mirror'
+      - HOME=$PWD yarn config --offline set yarn-offline-mirror $FLATPAK_BUILDER_BUILDDIR/flatpak-node/yarn-mirror
       - yarn --offline
       - cargo --offline fetch --manifest-path src-tauri/Cargo.toml
       - yarn run tauri build -- -b deb
       - install -Dm644 -t /app/share/metainfo/ io.github.vemonet.EmojiMart.appdata.xml
       - install -Dm755 -t /app/bin/ src-tauri/target/release/bundle/deb/*/data/usr/bin/*
       - mkdir -p /app/share/icons/hicolor
-      - cp -r src-tauri/target/release/bundle/deb/*/data/usr/share/icons/hicolor/* /app/share/icons/hicolor/
+      - cp -r src-tauri/target/release/bundle/deb/*/data/usr/share/icons/hicolor/*
+        /app/share/icons/hicolor/
       - mv /app/share/icons/hicolor/256x256@2/ /app/share/icons/hicolor/256x256/
       - install -Dm644 -t /app/share/applications/ io.github.vemonet.EmojiMart.desktop
