@@ -18,8 +18,6 @@ build-options:
   append-path: /usr/lib/sdk/node18/bin:/usr/lib/sdk/rust-stable/bin
 
 modules:
-  # - flathub-shared-modules/libappindicator/libappindicator-gtk3-12.10.json
-
   # To trigger paste on x11
   - name: xdotool
     no-autogen: true
@@ -39,13 +37,17 @@ modules:
     cleanup:
       - /share/man
 
-  # To trigger paste on wayland https://github.com/ReimuNotMoe/ydotool
+  # # To trigger paste on wayland https://github.com/ReimuNotMoe/ydotool
   # - name: ydotool
   #   buildsystem: cmake
+  #   config-opts:
+  #     - -DCMAKE_INSTALL_PREFIX=/app
   #   sources:
   #     - type: git
   #       url: https://github.com/vemonet/ydotool.git
-  #       commit: a6b6d34935340f27b613cd41bd12de66265079f3
+  #       commit: ffffc817319f02616a5c025e2d5b48ca6601026c
+  #     # - type: dir
+  #     #   path: "../ydotool"
   #   cleanup:
   #     - /share/man
 
@@ -56,12 +58,12 @@ modules:
         CARGO_HOME: /run/build/EmojiMart/cargo
         npm_config_offline: 'true'
     sources:
-      # - type: dir
-      #   path: "../EmojiMart"
       - type: git
         url: https://github.com/vemonet/EmojiMart
-        commit: cad5bb4fc397e4ccf5f2f72002e0db2799f507b8
-        # tag: v0.2.4
+        commit: 5b849ea75a6a40c2be449e40f596c7fdfe9874ed
+        # tag: v0.3.0
+      # - type: dir
+      #   path: "../EmojiMart"
       - 'node-sources.json'
       - 'cargo-sources.json'
       - type: file
@@ -76,7 +78,6 @@ modules:
           --run.offline true
         dest-filename: .yarnrc
     build-commands:
-      # - 'HOME=$PWD yarn config --offline set yarn-offline-mirror $FLATPAK_BUILDER_BUILDDIR/flatpak-node/yarn-mirror'
       - yarn --offline
       - cargo --offline fetch --manifest-path src-tauri/Cargo.toml
       - yarn run tauri build -- -b deb

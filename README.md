@@ -47,6 +47,14 @@ flatpak run io.github.vemonet.EmojiMart
 >
 > To try building the flatpak from a local folder, checkout the `io.github.vemonet.EmojiMart.yml` file to uncomment a line
 
+Open a shell inside the flatpak app to debug:
+
+```bash
+flatpak run --devel --command=sh io.github.vemonet.EmojiMart
+```
+
+In this shell use `emoji-mart` to start the app
+
 Clean the cache:
 
 ```bash
