@@ -15,8 +15,12 @@ install:
 
 sources:
 	python flatpak-cargo-generator.py -o cargo-sources.json ../EmojiMart/src-tauri/Cargo.lock
-	flatpak-node-generator -r -o node-sources.json yarn ../EmojiMart/yarn.lock
+	flatpak-node-generator --no-requests-cache -r -o node-sources.json npm ../EmojiMart/package-lock.json
 
+# flatpak-node-generator bug with package-lock v3, so we need to generate a v2 lock file: https://github.com/flatpak/flatpak-builder-tools/issues/366
+# npm i --lockfile-version 2 --package-lock-only
+
+# flatpak-node-generator -r -o node-sources.json yarn ../EmojiMart/yarn.lock
 # Gen from Yarn not working: flatpak-node-generator --no-requests-cache -r -o node-sources.json yarn ../yarn.lock
 
 flatpak:
