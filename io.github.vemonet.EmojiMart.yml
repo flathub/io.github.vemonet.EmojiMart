@@ -1,9 +1,9 @@
 app-id: io.github.vemonet.EmojiMart
 runtime: org.gnome.Platform
-runtime-version: '45'
+runtime-version: '46'
 sdk: org.gnome.Sdk
 sdk-extensions:
-  - org.freedesktop.Sdk.Extension.node18
+  - org.freedesktop.Sdk.Extension.node20
   - org.freedesktop.Sdk.Extension.rust-stable
 command: emoji-mart
 rename-icon: emoji-mart
@@ -13,9 +13,10 @@ finish-args:
   - --share=ipc
   - --share=network
   - --device=dri
+  - --env=WEBKIT_DISABLE_DMABUF_RENDERER=1 # https://github.com/tauri-apps/tauri/issues/9304
 
 build-options:
-  append-path: /usr/lib/sdk/node18/bin:/usr/lib/sdk/rust-stable/bin
+  append-path: /usr/lib/sdk/node20/bin:/usr/lib/sdk/rust-stable/bin
 
 modules:
   # To trigger paste on x11
@@ -60,14 +61,14 @@ modules:
     sources:
       - type: git
         url: https://github.com/vemonet/EmojiMart
-        commit: 5b849ea75a6a40c2be449e40f596c7fdfe9874ed
+        commit: 810178742269b1cb21891ed8720b97fb728921a6
         # tag: v0.3.0
       # - type: dir
       #   path: "../EmojiMart"
       - 'node-sources.json'
       - 'cargo-sources.json'
       - type: file
-        path: io.github.vemonet.EmojiMart.appdata.xml
+        path: io.github.vemonet.EmojiMart.metainfo.xml
       - type: file
         path: io.github.vemonet.EmojiMart.desktop
       # Configure yarn to use the offline mirror
@@ -81,9 +82,14 @@ modules:
       - yarn --offline
       - cargo --offline fetch --manifest-path src-tauri/Cargo.toml
       - yarn run tauri build -- -b deb
-      - install -Dm644 -t /app/share/metainfo/ io.github.vemonet.EmojiMart.appdata.xml
-      - install -Dm755 -t /app/bin/ src-tauri/target/release/bundle/deb/*/data/usr/bin/*
-      - mkdir -p /app/share/icons/hicolor
+      - install -Dm644 -t /app/share/metainfo/ io.github.vemonet.EmojiMart.metainfo.xml
+      # - install -Dm755 -t /app/bin/ src-tauri/target/release/bundle/deb/*/data/usr/bin/emoji-mart-app
+      - install -Dm755 src-tauri/target/release/bundle/deb/*/data/usr/bin/emoji-mart-app /app/bin/emoji-mart
+      - mkdir -p /app/share/icons/hicolor/256x256/apps
       - cp -r src-tauri/target/release/bundle/deb/*/data/usr/share/icons/hicolor/* /app/share/icons/hicolor/
-      - mv /app/share/icons/hicolor/256x256@2/ /app/share/icons/hicolor/256x256/
+      # Icons requirements: https://docs.flatpak.org/en/latest/conventions.html#application-icons
+      # There is a bug in flatpak, even if we define Exec and Icon=emoji-mart-app in the desktop file,
+      # it will still complain that it can't find emoji-mart... so we have to rename the icon to emoji-mart
+      # So many hidden states
+      - mv /app/share/icons/hicolor/256x256@2/apps/emoji-mart-app.png /app/share/icons/hicolor/256x256/apps/emoji-mart.png
       - install -Dm644 -t /app/share/applications/ io.github.vemonet.EmojiMart.desktop
