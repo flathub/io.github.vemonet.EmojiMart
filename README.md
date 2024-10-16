@@ -61,6 +61,12 @@ Clean the cache:
 make clean
 ```
 
+Lint the repo with `flatpak-builder`:
+
+```bash
+make lint
+```
+
 ## 📦 Update flatpak build
 
 To update this repository:

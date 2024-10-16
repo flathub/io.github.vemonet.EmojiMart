@@ -42,10 +42,16 @@
   <screenshots>
     <screenshot type="default">
       <image>https://github.com/vemonet/EmojiMart/raw/main/resources/screenshot.png</image>
+      <caption>EmojiMart in action</caption>
     </screenshot>
   </screenshots>
 
   <releases>
+    <release type="stable" version="0.3.0" date="2024-10-16">
+      <description>
+        <p>Upgrade to Tauri v2</p>
+      </description>
+    </release>
     <release type="stable" version="0.2.4" date="2023-07-11">
       <description>
         <p>Add localization for 22 languages</p>

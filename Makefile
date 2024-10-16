@@ -1,5 +1,5 @@
 OS := $(shell uname)
-.PHONY: install sources flatpak bundle clean
+.PHONY: install sources flatpak bundle clean lint
 
 install:
 	flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
@@ -27,6 +27,10 @@ flatpak:
 	flatpak run org.flatpak.Builder --keep-build-dirs --user --install --force-clean build io.github.vemonet.EmojiMart.yml --repo=.repo
 
 # flatpak run io.github.vemonet.EmojiMart --keep
+
+lint:
+	flatpak run --command=flatpak-builder-lint org.flatpak.Builder manifest io.github.vemonet.EmojiMart.yml
+	flatpak run --command=flatpak-builder-lint org.flatpak.Builder repo .
 
 bundle:
 	flatpak build-bundle .repo io.github.vemonet.EmojiMart.flatpak io.github.vemonet.EmojiMart
