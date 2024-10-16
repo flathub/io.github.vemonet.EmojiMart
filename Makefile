@@ -30,7 +30,7 @@ flatpak:
 
 lint:
 	flatpak run --command=flatpak-builder-lint org.flatpak.Builder manifest io.github.vemonet.EmojiMart.yml
-	flatpak run --command=flatpak-builder-lint org.flatpak.Builder repo .
+	flatpak run --command=flatpak-builder-lint org.flatpak.Builder repo .repo
 
 bundle:
 	flatpak build-bundle .repo io.github.vemonet.EmojiMart.flatpak io.github.vemonet.EmojiMart

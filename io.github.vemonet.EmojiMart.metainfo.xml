@@ -18,9 +18,10 @@
     <control>pointing</control>
     <control>keyboard</control>
     <control>touch</control>
-    <display_length compare="ge">small</display_length>
-    <display_length compare="le">xlarge</display_length>
   </supports>
+  <requires>
+    <display_length compare="ge">600</display_length>
+  </requires>
 
   <description>
     <p>
