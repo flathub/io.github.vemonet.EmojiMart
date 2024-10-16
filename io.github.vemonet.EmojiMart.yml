@@ -1,9 +1,9 @@
 app-id: io.github.vemonet.EmojiMart
 runtime: org.gnome.Platform
-runtime-version: '46'
+runtime-version: '47'
 sdk: org.gnome.Sdk
 sdk-extensions:
-  - org.freedesktop.Sdk.Extension.node20
+  - org.freedesktop.Sdk.Extension.node22
   - org.freedesktop.Sdk.Extension.rust-stable
 command: emoji-mart
 rename-icon: emoji-mart
@@ -16,7 +16,7 @@ finish-args:
   - --env=WEBKIT_DISABLE_DMABUF_RENDERER=1 # https://github.com/tauri-apps/tauri/issues/9304
 
 build-options:
-  append-path: /usr/lib/sdk/node20/bin:/usr/lib/sdk/rust-stable/bin
+  append-path: /usr/lib/sdk/node22/bin:/usr/lib/sdk/rust-stable/bin
 
 modules:
   # To trigger paste on x11
@@ -63,8 +63,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/vemonet/EmojiMart
-        commit: 497b6378e3ad20e2361d19d8f84df576832269f9
-        # tag: v0.3.0
+        tag: v0.3.0
+        # commit: 497b6378e3ad20e2361d19d8f84df576832269f9
       # - type: dir
       #   path: "../EmojiMart"
       - 'node-sources.json'

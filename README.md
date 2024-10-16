@@ -7,7 +7,7 @@ Flatpak build config for [vemonet/EmojiMart](https://github.com/vemonet/EmojiMar
 Clone this repository, and the EmojiMart repository in the same folder:
 
 ```bash
-git clone --recursive https://github.com/vemonet/flathub -b io.github.vemonet.EmojiMart
+git clone --recursive https://github.com/flathub/io.github.vemonet.EmojiMart
 git clone https://github.com/vemonet/EmojiMart
 cd flathub
 ```
