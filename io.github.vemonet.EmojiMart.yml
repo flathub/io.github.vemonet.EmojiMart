@@ -1,9 +1,9 @@
 app-id: io.github.vemonet.EmojiMart
 runtime: org.gnome.Platform
-runtime-version: '44'
+runtime-version: '47'
 sdk: org.gnome.Sdk
 sdk-extensions:
-  - org.freedesktop.Sdk.Extension.node16
+  - org.freedesktop.Sdk.Extension.node22
   - org.freedesktop.Sdk.Extension.rust-stable
 command: emoji-mart
 rename-icon: emoji-mart
@@ -13,60 +13,12 @@ finish-args:
   - --share=ipc
   - --share=network
   - --device=dri
+  - --env=WEBKIT_DISABLE_DMABUF_RENDERER=1 # https://github.com/tauri-apps/tauri/issues/9304
 
 build-options:
-  append-path: /usr/lib/sdk/node16/bin:/usr/lib/sdk/rust-stable/bin
+  append-path: /usr/lib/sdk/node22/bin:/usr/lib/sdk/rust-stable/bin
 
 modules:
-  # - flathub-shared-modules/libappindicator/libappindicator-gtk3-12.10.json
-
-  # Required to work on Gnome 44 (tauri@next already migrated to webkit2gtk-4.1 which is integrated in gnome 44)
-  - name: webkit2gtk-4.0
-    sources:
-      - type: archive
-        url: https://webkitgtk.org/releases/webkitgtk-2.38.6.tar.xz
-        sha256: 1c614c9589389db1a79ea9ba4293bbe8ac3ab0a2234cac700935fae0724ad48b
-        x-checker-data:
-          type: html
-          url: https://webkitgtk.org/releases/
-          version-pattern: <a href="webkitgtk\-(2\.38\.\d+)\.tar\.xz">
-          url-template: https://webkitgtk.org/releases/webkitgtk-$version.tar.xz
-    buildsystem: cmake-ninja
-    config-opts:
-      - -DPORT=GTK
-      - -DCMAKE_BUILD_TYPE=Release
-      - -DENABLE_DOCUMENTATION=OFF
-      - -DENABLE_GAMEPAD=OFF
-      - -DUSE_SOUP2=ON
-    modules:
-      - flathub-shared-modules/libsoup/libsoup-2.4.json
-      - name: bubblewrap
-        sources:
-          - type: archive
-            url: https://github.com/containers/bubblewrap/releases/download/v0.8.0/bubblewrap-0.8.0.tar.xz
-            sha256: 957ad1149db9033db88e988b12bcebe349a445e1efc8a9b59ad2939a113d333a
-            x-checker-data:
-              type: json
-              url: https://api.github.com/repos/containers/bubblewrap/releases/latest
-              tag-query: .tag_name
-              timestamp-query: .published_at
-              version-query: $tag | sub("^v"; "")
-              url-query: '"https://github.com/containers/bubblewrap/releases/download/\($tag)/bubblewrap-\($version).tar.xz"'
-        buildsystem: meson
-      - name: xdg-dbus-proxy
-        sources:
-          - type: archive
-            url: https://github.com/flatpak/xdg-dbus-proxy/releases/download/0.1.4/xdg-dbus-proxy-0.1.4.tar.xz
-            sha256: 1ec0eab53d1e49966d722352bcfd51ac402dce5190baedc749a8541e761670ab
-            x-checker-data:
-              type: json
-              url: https://api.github.com/repos/flatpak/xdg-dbus-proxy/releases/latest
-              tag-query: .tag_name
-              timestamp-query: .published_at
-              version-query: $tag
-              url-query: '"https://github.com/flatpak/xdg-dbus-proxy/releases/download/\($tag)/xdg-dbus-proxy-\($version).tar.xz"'
-        buildsystem: meson
-
   # To trigger paste on x11
   - name: xdotool
     no-autogen: true
@@ -86,43 +38,53 @@ modules:
     cleanup:
       - /share/man
 
-  # To trigger paste on wayland https://github.com/ReimuNotMoe/ydotool
-  - name: ydotool
-    buildsystem: cmake
-    sources:
-      - type: git
-        url: https://github.com/vemonet/ydotool.git
-        commit: a6b6d34935340f27b613cd41bd12de66265079f3
-    cleanup:
-      - /share/man
+  # # To trigger paste on wayland https://github.com/ReimuNotMoe/ydotool
+  # - name: ydotool
+  #   buildsystem: cmake
+  #   config-opts:
+  #     - -DCMAKE_INSTALL_PREFIX=/app
+  #   sources:
+  #     - type: git
+  #       url: https://github.com/vemonet/ydotool.git
+  #       commit: ffffc817319f02616a5c025e2d5b48ca6601026c
+  #     # - type: dir
+  #     #   path: "../ydotool"
+  #   cleanup:
+  #     - /share/man
 
   - name: EmojiMart
     buildsystem: simple
     build-options:
       env:
         CARGO_HOME: /run/build/EmojiMart/cargo
+        XDG_CACHE_HOME: /run/build/EmojiMart/flatpak-node/cache
         npm_config_offline: 'true'
+        npm_config_cache: /run/build/EmojiMart/flatpak-node/npm-cache
     sources:
-      # - type: dir
-      #   path: "../EmojiMart"
       - type: git
         url: https://github.com/vemonet/EmojiMart
-        tag: v0.2.4
-        # commit: 3439f717b3084b1f332c05a321a17387edb7d632
+        tag: v0.3.0
+        # commit: 497b6378e3ad20e2361d19d8f84df576832269f9
+      # - type: dir
+      #   path: "../EmojiMart"
       - 'node-sources.json'
       - 'cargo-sources.json'
       - type: file
-        path: io.github.vemonet.EmojiMart.appdata.xml
+        path: io.github.vemonet.EmojiMart.metainfo.xml
       - type: file
         path: io.github.vemonet.EmojiMart.desktop
     build-commands:
-      - 'HOME=$PWD yarn config --offline set yarn-offline-mirror $FLATPAK_BUILDER_BUILDDIR/flatpak-node/yarn-mirror'
-      - yarn --offline
+      - npm ci --offline --legacy-peer-deps
       - cargo --offline fetch --manifest-path src-tauri/Cargo.toml
-      - yarn run tauri build -- -b deb
-      - install -Dm644 -t /app/share/metainfo/ io.github.vemonet.EmojiMart.appdata.xml
-      - install -Dm755 -t /app/bin/ src-tauri/target/release/bundle/deb/*/data/usr/bin/*
-      - mkdir -p /app/share/icons/hicolor
+      - npm run tauri build -- -b deb
+      - install -Dm644 -t /app/share/metainfo/ io.github.vemonet.EmojiMart.metainfo.xml
+      # - install -Dm755 -t /app/bin/ src-tauri/target/release/bundle/deb/*/data/usr/bin/emoji-mart-app
+      - install -Dm755 src-tauri/target/release/bundle/deb/*/data/usr/bin/emoji-mart-app /app/bin/emoji-mart
+      - mkdir -p /app/share/icons/hicolor/256x256/apps
       - cp -r src-tauri/target/release/bundle/deb/*/data/usr/share/icons/hicolor/* /app/share/icons/hicolor/
-      - mv /app/share/icons/hicolor/256x256@2/ /app/share/icons/hicolor/256x256/
+      # Icons requirements: https://docs.flatpak.org/en/latest/conventions.html#application-icons
+      # There is a bug in flatpak, even if we define Exec and Icon=emoji-mart-app in the desktop file,
+      # it will still complain that it can't find emoji-mart... so we have to rename the icon to emoji-mart
+      # So many hidden states
+      - mv /app/share/icons/hicolor/256x256@2/apps/emoji-mart-app.png /app/share/icons/hicolor/256x256/apps/emoji-mart.png
       - install -Dm644 -t /app/share/applications/ io.github.vemonet.EmojiMart.desktop
