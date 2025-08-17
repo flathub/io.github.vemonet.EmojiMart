@@ -65,7 +65,7 @@ make lint
 To update this repository:
 
 * Make the **changes in the `dev` branch**
-* Send a PR to the `main` branch
+* Send a PR to the `master` branch
 * Checkout the build and response in the PR to see if everything works as expected
 
 ## 📋 Notes
