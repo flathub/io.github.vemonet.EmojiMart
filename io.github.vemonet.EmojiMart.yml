@@ -63,7 +63,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/vemonet/EmojiMart
-        tag: v0.3.0
+        tag: v0.3.1
         # commit: 497b6378e3ad20e2361d19d8f84df576832269f9
       # - type: dir
       #   path: "../EmojiMart"

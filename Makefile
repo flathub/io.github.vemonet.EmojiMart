@@ -8,14 +8,12 @@ install:
 		runtime/org.freedesktop.Sdk.Extension.rust-stable/x86_64/24.08 \
 		runtime/org.freedesktop.Sdk.Extension.node22/x86_64/24.08
 	wget -N https://raw.githubusercontent.com/flatpak/flatpak-builder-tools/master/cargo/flatpak-cargo-generator.py
-	pip install "git+https://github.com/flatpak/flatpak-builder-tools.git#egg=flatpak_node_generator&subdirectory=node"
-	pip install aiohttp toml
 
 # org.freedesktop.Sdk.Extension.rust-nightly/x86_64/22.08
 
 sources:
-	python flatpak-cargo-generator.py -o cargo-sources.json ../EmojiMart/src-tauri/Cargo.lock
-	flatpak-node-generator --no-requests-cache -r -o node-sources.json npm ../EmojiMart/package-lock.json
+	uv run flatpak-cargo-generator.py -o cargo-sources.json ../EmojiMart/src-tauri/Cargo.lock
+	uvx --from "git+https://github.com/flatpak/flatpak-builder-tools.git@master#egg=flatpak_node_generator&subdirectory=node" flatpak-node-generator --no-requests-cache -r -o node-sources.json npm ../EmojiMart/package-lock.json
 
 # flatpak-node-generator bug with package-lock v3, so we need to generate a v2 lock file: https://github.com/flatpak/flatpak-builder-tools/issues/366
 # npm i --lockfile-version 2 --package-lock-only
