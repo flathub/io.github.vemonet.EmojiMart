@@ -12,13 +12,6 @@ git clone https://github.com/vemonet/EmojiMart
 cd flathub
 ```
 
-Create and activate a virtual environment (for python dependencies used to generate sources):
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-```
-
 Install dependencies:
 
 ```bash
@@ -71,7 +64,7 @@ make lint
 
 To update this repository:
 
-* Make the changes in a separate branch, e.g. `dev`
+* Make the **changes in the `dev` branch**
 * Send a PR to the `main` branch
 * Checkout the build and response in the PR to see if everything works as expected
 
