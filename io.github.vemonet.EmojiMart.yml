@@ -28,8 +28,8 @@ modules:
       - PREFIX=${FLATPAK_DEST}
     sources:
       - type: archive
-        url: https://github.com/jordansissel/xdotool/archive/v3.20211022.1/xdotool-3.20211022.1.tar.gz
-        sha256: 82b15a944a5e82fee15e0f6116bd9f642bc3d0bb6989fc0ca5ad9dfe35de0847
+        url: https://github.com/jordansissel/xdotool/archive/v4.20260303.1/xdotool-4.20260303.1.tar.gz
+        sha256: c1f971a384da588eb99ca0755fc4300316d49c1e612537e3f1de52215e104fa3
         x-checker-data:
           type: anitya
           project-id: 8648
@@ -67,8 +67,8 @@ modules:
         # commit: 497b6378e3ad20e2361d19d8f84df576832269f9
       # - type: dir
       #   path: "../EmojiMart"
-      - 'node-sources.json'
-      - 'cargo-sources.json'
+      - node-sources.json
+      - cargo-sources.json
       - type: file
         path: io.github.vemonet.EmojiMart.metainfo.xml
       - type: file
@@ -79,9 +79,11 @@ modules:
       - npm run tauri build -- -b deb
       - install -Dm644 -t /app/share/metainfo/ io.github.vemonet.EmojiMart.metainfo.xml
       # - install -Dm755 -t /app/bin/ src-tauri/target/release/bundle/deb/*/data/usr/bin/emoji-mart-app
-      - install -Dm755 src-tauri/target/release/bundle/deb/*/data/usr/bin/emoji-mart-app /app/bin/emoji-mart
+      - install -Dm755 src-tauri/target/release/bundle/deb/*/data/usr/bin/emoji-mart-app
+        /app/bin/emoji-mart
       - mkdir -p /app/share/icons/hicolor/256x256/apps
-      - cp -r src-tauri/target/release/bundle/deb/*/data/usr/share/icons/hicolor/* /app/share/icons/hicolor/
+      - cp -r src-tauri/target/release/bundle/deb/*/data/usr/share/icons/hicolor/*
+        /app/share/icons/hicolor/
       # Icons requirements: https://docs.flatpak.org/en/latest/conventions.html#application-icons
       # There is a bug in flatpak, even if we define Exec and Icon=emoji-mart-app in the desktop file,
       # it will still complain that it can't find emoji-mart... so we have to rename the icon to emoji-mart
